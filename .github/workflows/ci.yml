@@ -1,0 +1,26 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t toscar74/my-portfolio .
+
+      
+      - name: Push image
+        run: |
+          docker login -u toscar74 -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push toscar74/my-portfolio
