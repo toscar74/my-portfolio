@@ -8,20 +8,20 @@ on:
   push:
     branches: [ "main" ]   # Runs when you push to main
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
-        
+
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Build images
-      run: docker build -t toscar8/portfolio .
-    - name: push image
-      run: |
-        docker login -u toscar8 -p ${{ secrets.DOCKERHUB_TOKEN }}
-        docker push toscar8/portfolio
+      - uses: actions/checkout@v4
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      - name: Build Docker image
+        run: docker build -t toscar8/portfolio:latest .
+      - name: Push Docker image
+        run: docker push toscar8/portfolio:latest
 
