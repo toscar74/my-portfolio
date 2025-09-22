@@ -7,20 +7,21 @@ name: Build and Push Docker Image
 on:
   push:
     branches: [ "main" ]   # Runs when you push to main
-  workflow_dispatch:       # Allows manual run from Actions tab
+  pull_request:
+    branches: [ main ]
 
         
-        jobs:
+jobs:
 
-          build:
+  build:
 
-           runs-on: ubuntu-latest
-           steps:
-             - uses: actions/checkout@v4
-             - name: Build images
-              run: docker build -t toscar8/portfolio
-             - name: push image
-              run: |
-                   docker login -u toscar8 -p ${{ secrets.DOCKERHUB_TOKEN }}
-                   docker push toscar8/portfolio
+    runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v4
+     - name: Build images
+       run: docker build -t toscar8/portfolio
+    - name: push image
+      run: |
+        docker login -u toscar8 -p ${{ secrets.DOCKERHUB_TOKEN }}
+        docker push toscar8/portfolio
 
