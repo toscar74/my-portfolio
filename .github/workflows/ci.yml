@@ -12,17 +12,14 @@ on:
         
         jobs:
 
-        build:
+          build:
 
-          runs-on: ubuntu-latest
-
-          steps:
-            - uses: actions/checkout@v4
-
-            - name: Build images
-              uses: docker build -t toscar8/portfolio
-            - name: push image
-
+           runs-on: ubuntu-latest
+           steps:
+             - uses: actions/checkout@v4
+             - name: Build images
+              run: docker build -t toscar8/portfolio
+             - name: push image
               run: |
                    docker login -u toscar8 -p ${{ secrets.DOCKERHUB_TOKEN }}
                    docker push toscar8/portfolio
