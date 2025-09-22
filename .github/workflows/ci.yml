@@ -9,28 +9,21 @@ on:
     branches: [ "main" ]   # Runs when you push to main
   workflow_dispatch:       # Allows manual run from Actions tab
 
-jobs:
-  docker:
-    runs-on: ubuntu-latest
+        
+        jobs:
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+        build:
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+          runs-on: ubuntu-latest
 
-      - name: Debug secrets (optional, remove later)
-        run: echo "DOCKER_USERNAME is ${{ secrets.DOCKER_USERNAME }}"
+          steps:
+            - uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+            - name: Build images
+              uses: docker build -t toscar8/portfolio
+            - name: push image
 
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/resume:latest .
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/resume:latest
-
-
+              run: |
+                   docker login -u toscar8 -p ${{ secrets.DOCKERHUB_TOKEN }}
+                   docker push toscar8/portfolio
 
